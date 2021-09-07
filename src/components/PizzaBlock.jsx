@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import { addPizzaToCart } from './../redux/actions/importActions';
 
 const PizzaBlock = ({ id, imageUrl, name, types, sizes, price }) => {
+    types = JSON.parse(types);
+    sizes = JSON.parse(sizes);
     const dispatch = useDispatch();
     const typesArray = ['Тонкое', 'Традиционное'];
     const sizesArray = [26, 30, 40];
