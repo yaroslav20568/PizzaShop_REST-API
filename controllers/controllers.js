@@ -18,4 +18,22 @@ const getPizzasFromDB = (req, resp) => {
     });
 }
 
-module.exports = { getPizzasFromDB };
+const registration = (req, resp) => {
+    const login = req.body.login;
+    const password = req.body.password;
+
+    db.query('SELECT * FROM customers WHERE login = ? ', [login], (err, results) => {
+        if(err) {
+            console.log(err);
+        } else {
+            if(results.length === 0) {
+                db.query('INSERT INTO customers(id_customers, login, password) VALUES (?, ?, ?)', [null, login, password]);
+                resp.status(200).json({message: 'Регистрация прошла успешно'});
+            } else {
+                resp.status(200).json({message: 'Пользователь уже зарегестрирован'});
+            }
+        }
+    });
+}
+
+module.exports = { getPizzasFromDB, registration };
