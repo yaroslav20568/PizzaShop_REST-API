@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { fetchPizzas } from './redux/actions/importActions';
 import { Header } from './components/importComponents';
-import { Home, Cart, PageNotFound } from './pages/importPages';
+import { Home, Cart, PageNotFound, Auth, Login, Register } from './pages/importPages';
 
 function App() {
     const dispatch = useDispatch();
@@ -25,27 +25,44 @@ function App() {
 
     return (
         <div className="wrapper">
-            <Header totalPrice={totalPrice} totalPizzas={totalPizzas} />
-            <div className="content">
-                <Switch>
+            <Switch>
                     <Route path="/" exact>
-                        <Home
-                            pizzas={pizzas}
-                            isLoaded={isLoaded}
-                            activeCategorie={activeCategorie} 
-                            activeSortBy={activeSortBy} 
-                        />
+                        <Auth />
+                    </Route>
+                    <Route path="/login" exact>
+                        <Login />
+                    </Route> 
+                    <Route path="/register" exact>
+                        <Register />   
+                    </Route>
+                    <Route path="/home" exact>
+                        <Header totalPrice={totalPrice} totalPizzas={totalPizzas} />
+                        <div className="content">
+                            <Home
+                                pizzas={pizzas}
+                                isLoaded={isLoaded}
+                                activeCategorie={activeCategorie} 
+                                activeSortBy={activeSortBy} 
+                            />
+                        </div>
                     </Route>
                     <Route path="/cart" exact>
-                        <Cart 
-                            items={items} 
-                            totalPrice={totalPrice} 
-                            totalPizzas={totalPizzas} 
-                        />
+                        <Header totalPrice={totalPrice} totalPizzas={totalPizzas} />
+                        <div className="content">
+                            <Cart 
+                                items={items} 
+                                totalPrice={totalPrice} 
+                                totalPizzas={totalPizzas} 
+                            />
+                        </div>
                     </Route>
-                    <Route component={ PageNotFound } exact />
-                </Switch>
-            </div>
+                    <Route path="*" exact>
+                        <Header totalPrice={totalPrice} totalPizzas={totalPizzas} />
+                        <div className="content">
+                            <PageNotFound />
+                        </div>
+                    </Route>
+            </Switch>
         </div>
     );
 }
