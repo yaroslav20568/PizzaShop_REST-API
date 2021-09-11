@@ -19,7 +19,7 @@ const Register = () => {
         setPassword('');
     }
 
-    const createCustomer = (e) => {
+    const registration = (e) => {
         e.preventDefault();
 
         if(!login || !password) {
@@ -33,7 +33,9 @@ const Register = () => {
             })
             .then(({ data }) => {
                 showMessageInfo(data.message);
-                clearInputState();
+                if(data.message === 'Регистрация прошла успешно') {
+                    clearInputState();
+                }
             })
         }
     };
@@ -48,8 +50,8 @@ const Register = () => {
                 setLogin={setLogin}
                 setPassword={setPassword}
                 messageInfo={messageInfo}
-                buttonText="Зарегистрировать пользователя"
-                func={createCustomer}
+                buttonText="Зарегистрироваться"
+                func={registration}
             />
 
             <button onClick={() => history.goBack()}>Назад</button>
