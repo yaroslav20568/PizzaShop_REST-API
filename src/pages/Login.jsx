@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Redirect, useHistory, BrowserRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormAuth } from './../components/importComponents';
+import { setUser, setAuth } from './../redux/actions/importActions';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const { isAuth } = useSelector(({ user }) => user);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [messageInfo, setMessageInfo] = useState('');
-    const [auth, setAuth] = useState(false);
     const history = useHistory();
 
     const showMessageInfo = (message) => {
@@ -24,14 +27,15 @@ const Login = () => {
         })
         .then(({ data }) => {
             showMessageInfo(data.message);
-            setAuth(data.auth);
+            dispatch(setAuth(data.auth));
+            data.data && dispatch(setUser(data.data[0].login));
         })
     }
 
     return (
         <div>
             {
-                !auth ?
+                !isAuth ?
                     <>
                         <div>Авторизация</div>
 
