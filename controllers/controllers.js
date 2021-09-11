@@ -30,10 +30,30 @@ const registration = (req, resp) => {
                 db.query('INSERT INTO customers(id_customers, login, password) VALUES (?, ?, ?)', [null, login, password]);
                 resp.status(200).json({message: 'Регистрация прошла успешно'});
             } else {
-                resp.status(200).json({message: 'Пользователь уже зарегестрирован'});
+                resp.status(200).json({message: 'Пользователь уже зарегистрирован'});
             }
         }
     });
 }
 
-module.exports = { getPizzasFromDB, registration };
+const authorization = (req, resp) => {
+    const login = req.body.login;
+    const password = req.body.password;
+
+    db.query('SELECT * FROM customers WHERE login = ?', [login], (err, results) => {
+        if(results.length === 0) {
+            resp.status(200).json({message: 'Такого пользователя нету, зарегиструруйтесь'});
+        } else {
+            if(results[0].password === password) {
+                db.query('SELECT * FROM cart WHERE id_customers = ?', [results[0].id_customers], (err, array) => {
+                    console.log(array);
+                });
+                resp.status(200).json({message: 'Вы авторизованы', auth: true});
+            } else {
+                resp.status(200).json({message: 'Неверный пороль'});
+            }
+        }
+    })
+};
+
+module.exports = { getPizzasFromDB, registration, authorization };
