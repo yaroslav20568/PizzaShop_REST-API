@@ -1,4 +1,5 @@
 const defaultState = {
+    id: '',
     user: '',
     isAuth: false
 };
@@ -6,10 +7,8 @@ const defaultState = {
 const user = (state = defaultState, action) => {
     switch (action.type) {
         case 'SET_USER':
-            return {...state, user: action.payload}
+            return {...state, id: action.payload.id, user: action.payload.user, isAuth: action.payload.isAuth }
             break;
-        case 'SET_AUTH':
-            return {...state, isAuth: action.payload}
         default:
             return state;
     }

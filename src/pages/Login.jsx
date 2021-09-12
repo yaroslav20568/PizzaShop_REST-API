@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FormAuth } from './../components/importComponents';
-import { setUser, setAuth } from './../redux/actions/importActions';
+import { setUser } from './../redux/actions/importActions';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -24,12 +24,30 @@ const Login = () => {
             password
         })
         .then(({ data }) => {
-            showMessageInfo(data.message);
-            data.auth && dispatch(setAuth(data.auth));
-            data.login && dispatch(setUser(data.login));
+            const { message, userInfo, token } = data;
+            showMessageInfo(message);
+            userInfo && dispatch(setUser(userInfo));
+            localStorage.setItem('token', token);
             console.log(data);
         })
     }
+
+    const authentication = () => {
+        axios.get('http://localhost:3001/auth', {
+            headers: {authorization: `bearer ${localStorage.getItem('token')}`}
+        })
+        .then(({ data }) => {
+            const { message, userInfo, token } = data;
+            showMessageInfo(message);
+            userInfo && dispatch(setUser(userInfo));
+            localStorage.setItem('token', token);
+            console.log(data);
+        })
+    }
+
+    useEffect(() => {
+        authentication();
+    }, []);
 
     return (
         <div>

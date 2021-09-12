@@ -1,4 +1,4 @@
 export { setPizzas, setLoaded, fetchPizzas} from './pizzas';
 export { setCategorie, setSortBy } from './filter';
 export { addPizzaToCart, clearCart, removePizzaFromCart, minusCountPizza, plusCountPizza } from './cart';
-export { setUser, setAuth } from './user';
+export { setUser } from './user';

@@ -1,4 +1,3 @@
-const setUser = (user) => ({type: 'SET_USER', payload: user});
-const setAuth = (flag) => ({type: 'SET_AUTH', payload: flag});
+const setUser = (obj) => ({type: 'SET_USER', payload: obj});
 
-export { setUser, setAuth };
+export { setUser };
