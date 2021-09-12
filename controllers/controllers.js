@@ -46,6 +46,7 @@ const authorization = (req, resp) => {
     const password = req.body.password;
 
     db.query('SELECT * FROM users WHERE login = ?', [login], (err, results) => {
+        console.log(login)
         if(results.length === 0) {
             resp.status(200).json({message: 'Такого пользователя нету, зарегиструруйтесь'});
         } else {
@@ -53,10 +54,15 @@ const authorization = (req, resp) => {
                 const queryStr = `
                     SELECT id_item, login, imageUrl, name, type, size, count, price FROM cart 
                     JOIN users ON cart.id_user = users.id_user
+                    WHERE login = ?
                 `;
-                db.query(queryStr, [results[0].id_user], (err, array) => {
-                    console.log(array);
-                    resp.status(200).json({message: 'Вы авторизованы', auth: true, data: array});
+                db.query(queryStr, login, (err, array) => {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log(array);
+                        resp.status(200).json({message: 'Вы авторизованы', auth: true, login: login, data: array});
+                    }
                 });
             } else {
                 resp.status(200).json({message: 'Неверный пороль'});
