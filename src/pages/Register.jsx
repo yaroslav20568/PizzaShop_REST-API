@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FormAuth } from './../components/importComponents';
 
 const Register = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [messageInfo, setMessageInfo] = useState('');
-    const history = useHistory();
 
     const showMessageInfo = (message) => {
         setMessageInfo(message);
@@ -54,7 +53,9 @@ const Register = () => {
                 func={registration}
             />
 
-            <button onClick={() => history.goBack()}>Назад</button>
+            <Link to="/login">
+                <button>Авторизация</button>
+            </Link>
         </div>
     )
 }

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Redirect, useHistory, BrowserRouter } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FormAuth } from './../components/importComponents';
 import { setUser, setAuth } from './../redux/actions/importActions';
 
 const Login = () => {
     const dispatch = useDispatch();
-    const { isAuth } = useSelector(({ user }) => user);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [messageInfo, setMessageInfo] = useState('');
-    const history = useHistory();
 
     const showMessageInfo = (message) => {
         setMessageInfo(message);
@@ -27,32 +25,29 @@ const Login = () => {
         })
         .then(({ data }) => {
             showMessageInfo(data.message);
-            dispatch(setAuth(data.auth));
-            data.data && dispatch(setUser(data.data[0].login));
+            data.auth && dispatch(setAuth(data.auth));
+            data.login && dispatch(setUser(data.login));
+            console.log(data);
         })
     }
 
     return (
         <div>
-            {
-                !isAuth ?
-                    <>
-                        <div>Авторизация</div>
+            <div>Авторизация</div>
 
-                        <FormAuth
-                            login={login}
-                            password={password}
-                            setLogin={setLogin}
-                            setPassword={setPassword}
-                            messageInfo={messageInfo}
-                            buttonText="Авторизоваться"
-                            func={authorization}
-                        />
+            <FormAuth
+                login={login}
+                password={password}
+                setLogin={setLogin}
+                setPassword={setPassword}
+                messageInfo={messageInfo}
+                buttonText="Авторизоваться"
+                func={authorization}
+            />
             
-                        <button onClick={() => history.goBack()}>Назад</button>
-                    </> :
-                    <Redirect to="/home" />
-            }
+            <Link to="/register">
+                <button>Регистрация</button>
+            </Link>
         </div>
     )
 }
